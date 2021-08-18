@@ -1,7 +1,10 @@
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'add_view.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
@@ -34,11 +37,32 @@ class _HomeViewState extends State<HomeView> {
                 );
               }
               return ListView(
-                children: [],
+                children: snapshot.data!.docs.map((document) {
+                  return Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("Coin Name: ${document.id}"),
+                        Text("Amount Owned: ${document.data()['Amount']}"),
+                      ],
+                    ),
+                  );
+                }).toList(),
               );
             },
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddView(),
+            ),
+          );
+        },
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
