@@ -1,3 +1,5 @@
+import 'package:crypto_wallet/net/flutterfire.dart';
+import 'package:crypto_wallet/ui/home_view.dart';
 import 'package:flutter/material.dart';
 
 class Authentication extends StatefulWidget {
@@ -20,6 +22,7 @@ class _AuthenticationState extends State<Authentication> {
             color: Colors.blueAccent,
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TextFormField(
                 controller: _emailField,
@@ -36,7 +39,7 @@ class _AuthenticationState extends State<Authentication> {
               ),
               TextFormField(
                 controller: _passwordField,
-                            decoration: InputDecoration(
+                decoration: InputDecoration(
                   hintText: "Enter your password",
                   hintStyle: TextStyle(
                     color: Colors.white,
@@ -48,8 +51,52 @@ class _AuthenticationState extends State<Authentication> {
                 ),
                 obscureText: true,
               ),
-              Container(),
-              Container(),
+              Container(
+                width: MediaQuery.of(context).size.width / 1.4,
+                height: 45,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: Colors.white,
+                ),
+                child: MaterialButton(
+                  onPressed: () async {
+                    bool shouldNavigate =
+                        await register(_emailField.text, _passwordField.text);
+                    if (shouldNavigate) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeView(),
+                        ),
+                      );
+                    }
+                  },
+                  child: Text("Register"),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width / 1.4,
+                height: 45,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: Colors.white,
+                ),
+                child: MaterialButton(
+                  onPressed: () async {
+                    bool shouldNavigate =
+                        await signIn(_emailField.text, _passwordField.text);
+                    if (shouldNavigate) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeView(),
+                        ),
+                      );
+                    }
+                  },
+                  child: Text("Login"),
+                ),
+              ),
             ],
           )),
     );
